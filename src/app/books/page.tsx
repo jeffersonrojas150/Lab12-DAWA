@@ -5,21 +5,9 @@ type BooksPageProps = {
 };
 
 async function fetchBooksData(searchParams: { [key: string]: string | string[] | undefined }) {
-    // Determinar la URL base según el entorno
-    const getBaseUrl = () => {
-        // En desarrollo
-        if (process.env.NODE_ENV === 'development') {
-            return 'http://localhost:3000';
-        }
-        // En producción de Vercel
-        if (process.env.VERCEL_URL) {
-            return `https://${process.env.VERCEL_URL}`;
-        }
-        // Fallback: usar la URL actual del request
-        return '';
-    };
-
-    const apiBaseUrl = getBaseUrl();
+    const apiBaseUrl = process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : 'http://localhost:3000';
 
     const validKeys = ['page', 'limit', 'sortBy', 'order', 'search', 'genre', 'authorId'];
 
@@ -61,6 +49,7 @@ async function fetchBooksData(searchParams: { [key: string]: string | string[] |
 }
 
 export default async function BooksPage({ searchParams }: BooksPageProps) {
+    // Await searchParams antes de usarlo
     const resolvedSearchParams = await searchParams;
     
     const { initialBooks, initialPagination, genres, authorList } = await fetchBooksData(resolvedSearchParams);
