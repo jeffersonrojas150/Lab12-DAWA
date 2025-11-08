@@ -5,9 +5,7 @@ type BooksPageProps = {
 };
 
 async function fetchBooksData(searchParams: { [key: string]: string | string[] | undefined }) {
-    const apiBaseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : 'http://localhost:3000';
+    const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
 
     const validKeys = ['page', 'limit', 'sortBy', 'order', 'search', 'genre', 'authorId'];
 
